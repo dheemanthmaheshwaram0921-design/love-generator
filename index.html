@@ -41,6 +41,7 @@
   <button onclick="generate()">Generate</button>
 
   <div id="result"></div>
+  <button onclick="copyText()">Copy</button>
 
   <script>
     const messages = {
@@ -70,15 +71,13 @@
       document.getElementById("result").innerText = msg.replace("{{name}}", name);
     }
   </script>
-
-</body>
-</html>
-<button onclick="copyText()">Copy</button>
-
-<script>
+  <script>
 function copyText() {
   const text = document.getElementById("result").innerText;
   navigator.clipboard.writeText(text);
   alert("Copied!");
 }
-</script>
+  </script>
+
+</body>
+</html>
