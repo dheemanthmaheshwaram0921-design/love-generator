@@ -348,16 +348,15 @@ const messages = {
   const arr = messages[mood];
 
   const raw = arr[Math.floor(Math.random() * arr.length)];
-  const msg = raw.replace("{{name}}", name);
+  const msg = raw.replaceAll("{{name}}", name);
 
   const resultDiv = document.getElementById("result");
-  resultDiv.innerText = "";
-  resultDiv.classList.add("show");
+  resultDiv.textContent = "";
 
   let i = 0;
   const typing = setInterval(() => {
     if (i < msg.length) {
-      resultDiv.innerText += msg.charAt(i);
+      resultDiv.textContent += msg[i];
       i++;
     } else {
       clearInterval(typing);
