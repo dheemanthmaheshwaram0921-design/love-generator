@@ -4,24 +4,45 @@
   <title>Love Message Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: Arial;
-      background: #ffdee9;
-      background: linear-gradient(135deg, #ffdee9, #b5fffc);
-      text-align: center;
-      padding: 40px;
-    }
-    input, select, button {
-      padding: 12px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-    }
-    #result {
-      margin-top: 30px;
-      font-size: 20px;
-    }
+  #result {
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #ffe6f0; /* soft pink background */
+    color: #333;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  #result.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  button {
+    display: block;
+    margin: 15px auto;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 10px;
+    border: none;
+    background: #ff69b4;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background: #ff85c1;
+    transform: scale(1.05);
+  }
   </style>
 </head>
 <body>
@@ -316,16 +337,20 @@ const messages = {
     "You make my day LOL, {{name}}."
   ]
 };
-
-// Existing generate function
 function generate() {
   const name = document.getElementById("name").value || "you";
   const mood = document.getElementById("mood").value;
   const arr = messages[mood];
   const msg = arr[Math.floor(Math.random() * arr.length)];
-  document.getElementById("result").innerText = msg.replace("{{name}}", name);
-}
-
+  
+  const resultDiv = document.getElementById("result");
+  resultDiv.innerText = msg.replace("{{name}}", name);
+  
+  // Trigger animation
+  resultDiv.classList.remove("show");   // reset animation
+  void resultDiv.offsetWidth;            // force reflow
+  resultDiv.classList.add("show");       // play animation
+} 
 // Copy button function (already added)
 function copyText() {
   const text = document.getElementById("result").innerText;
