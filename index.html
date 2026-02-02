@@ -4,46 +4,48 @@
   <title>Love Message Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-  #result {
-    font-size: 1.2em;
-    text-align: center;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    background: #ffe6f0; /* soft pink background */
-    color: #333;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.5s ease;
-    opacity: 0;
-    transform: translateY(20px);
-  }
+.hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
 
-  #result.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 24px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+}
 
-  button {
-    display: block;
-    margin: 15px auto;
-    padding: 10px 20px;
-    font-size: 1em;
-    border-radius: 10px;
-    border: none;
-    background: #ff69b4;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+    @keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
 
-  button:hover {
-    background: #ff85c1;
-    transform: scale(1.05);
-  }
-  </style>
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+button:active {
+  animation: shake 0.3s;
+}
+</style>
 </head>
 <body>
 
@@ -59,9 +61,11 @@
   </select>
 
   <br>
-  <button onclick="generate()">Generate</button>
-
-  <div id="result"></div>
+  <button onclick="generate()" style="animation: pulse 2s infinite;">
+Generate
+</button>
+  
+  <div class="hearts"></div>
   <button onclick="copyText()">Copy</button>
 <script>
 const messages = {
@@ -341,22 +345,36 @@ function generate() {
   const name = document.getElementById("name").value || "you";
   const mood = document.getElementById("mood").value;
   const arr = messages[mood];
-  const msg = arr[Math.floor(Math.random() * arr.length)];
-  
+  const msg = arr[Math.floor(Math.random() * arr.length)]
+                .replace("{{name}}", name);
+
   const resultDiv = document.getElementById("result");
-  resultDiv.innerText = msg.replace("{{name}}", name);
-  
-  // Trigger animation
-  resultDiv.classList.remove("show");   // reset animation
-  void resultDiv.offsetWidth;            // force reflow
-  resultDiv.classList.add("show");       // play animation
-} 
+  resultDiv.innerText = "";
+  resultDiv.classList.add("show");
+
+  let i = 0;
+  const typing = setInterval(() => {
+    resultDiv.innerText += msg[i];
+    i++;
+    if (i >= msg.length) clearInterval(typing);
+  }, 40); // typing speed
+}
 // Copy button function (already added)
 function copyText() {
   const text = document.getElementById("result").innerText;
   navigator.clipboard.writeText(text);
   alert("Copied!");
 }
+  setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.querySelector(".hearts").appendChild(heart);
+
+  setTimeout(() => heart.remove(), 8000);
+}, 500);
     </script>
 
 </body>
