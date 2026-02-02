@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Love Message Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial;
+      background: #ffdee9;
+      background: linear-gradient(135deg, #ffdee9, #b5fffc);
+      text-align: center;
+      padding: 40px;
+    }
+    input, select, button {
+      padding: 12px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💌 Love Message Generator</h1>
+
+  <input id="name" placeholder="Their name" />
+  
+  <select id="mood">
+    <option value="cute">Cute</option>
+    <option value="romantic">Romantic</option>
+    <option value="sad">Sad</option>
+    <option value="toxic">Toxic</option>
+  </select>
+
+  <br>
+  <button onclick="generate()">Generate</button>
+
+  <div id="result"></div>
+
+  <script>
+    const messages = {
+      cute: [
+        "I smile every time I see your name, {{name}}.",
+        "{{name}}, you make my world softer and brighter."
+      ],
+      romantic: [
+        "{{name}}, I think about you in all the quiet moments.",
+        "If love had a face, it would look like you, {{name}}."
+      ],
+      sad: [
+        "I miss you more than I know how to say, {{name}}.",
+        "Some days feel empty without you, {{name}}."
+      ],
+      toxic: [
+        "{{name}}, you ruined my peace but I still want you.",
+        "I hate how much I care about you, {{name}}."
+      ]
+    };
+
+    function generate() {
+      const name = document.getElementById("name").value || "you";
+      const mood = document.getElementById("mood").value;
+      const arr = messages[mood];
+      const msg = arr[Math.floor(Math.random() * arr.length)];
+      document.getElementById("result").innerText = msg.replace("{{name}}", name);
+    }
+  </script>
+
+</body>
+</html>
