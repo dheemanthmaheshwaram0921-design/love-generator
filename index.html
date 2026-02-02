@@ -73,3 +73,12 @@
 
 </body>
 </html>
+<button onclick="copyText()">Copy</button>
+
+<script>
+function copyText() {
+  const text = document.getElementById("result").innerText;
+  navigator.clipboard.writeText(text);
+  alert("Copied!");
+}
+</script>
