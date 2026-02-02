@@ -341,12 +341,13 @@ const messages = {
     "You make my day LOL, {{name}}."
   ]
 };
-function generate() {
+  function generate() {
   const name = document.getElementById("name").value || "you";
   const mood = document.getElementById("mood").value;
   const arr = messages[mood];
-  const msg = arr[Math.floor(Math.random() * arr.length)]
-                .replace("{{name}}", name);
+
+  const raw = arr[Math.floor(Math.random() * arr.length)];
+  const msg = raw.replace("{{name}}", name);
 
   const resultDiv = document.getElementById("result");
   resultDiv.innerText = "";
@@ -354,10 +355,13 @@ function generate() {
 
   let i = 0;
   const typing = setInterval(() => {
-    resultDiv.innerText += msg[i];
-    i++;
-    if (i >= msg.length) clearInterval(typing);
-  }, 40); // typing speed
+    if (i < msg.length) {
+      resultDiv.innerText += msg.charAt(i);
+      i++;
+    } else {
+      clearInterval(typing);
+    }
+  }, 40);
 }
 // Copy button function (already added)
 function copyText() {
